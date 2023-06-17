@@ -2,7 +2,7 @@
 // Linking a JavaScript File
 
 /*
-alert("Hello World");
+alert("Hello World Javascript");
 
 let js = "AMAZING" ;
 if ( js === "AMAZING") console.log("Yes lets learn javascript");
