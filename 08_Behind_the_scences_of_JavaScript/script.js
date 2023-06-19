@@ -1,5 +1,6 @@
 'use strict';
 
+/*
 
 function calcAge(birthYear){
     const age = 2037 - birthYear;
@@ -135,5 +136,146 @@ matilda.calcAge();
 const f = raj.calcAge;
 f();
 
+*/
+//regular function vs arrow function
+var firstName = "Yashwant";
+
+const jonas = {
+    firstName : "Rajneesh",
+    year : 1993 ,
+
+    calcAge : function(){
+        // console.log(this);
+        console.log(2037-this.year);
+
+        // const self = this ; //self or that
+        // const isMillenial = function(){
+        //     console.log(self);
+        //     console.log(self.year >= 1981 && self.year <= 1996);
+
+        //     // console.log(this.year >= 1981 && this.year <= 1996);
+        // } 
+
+        //Use arrow function to get this from parent scope
+        const isMillenial = () =>{
+            console.log(this);
+            console.log(this.year >= 1981 && this.year <= 1996);
+
+            // console.log(this.year >= 1981 && this.year <= 1996);
+        } 
+
+    isMillenial();
+
+    },
 
 
+    
+
+    greet1 : function()  {
+        console.log(this);
+        console.log(`Hey ${this.firstName}`);
+    },
+
+    greet2 : ( )=>  {
+        console.log(this);
+        console.log(`Hey ${this.firstName}`);
+    },
+
+};
+
+jonas.greet1();
+jonas.greet2();
+console.log(this.firstName);
+
+jonas.calcAge();
+
+
+//argument keyword are available for regular function
+
+const addExpr = function(a,b){
+    console.log(arguments);
+    return a+b;
+}
+addExpr(2,5);
+addExpr(5,6,1);
+
+// Uncaught ReferenceError: arguments is not define at addArrow
+// const addArrow = (a,b) =>{
+//     console.log(arguments);
+//     return a+b;
+// }
+
+// addArrow(4,5,1);
+
+//Primitive value example 
+
+//age and oldage point to different addresses in stack 
+let age =30 ;
+let oldAge = age ;
+age = 31 ;
+console.log(age); //31
+console.log(oldAge); //30
+
+//reference value example
+
+const me = {
+    name : 'Raj',
+    age : 30
+}
+
+
+//me and friend point to same reference to memory address in heap
+const friend = me ;
+friend.age = 27 ;
+
+console.log("Friend : " , friend); // {name : "Jonas" , age : 27}
+
+console.log('Me : ' , me);
+
+//Primitive value example 
+
+let lastName = "SINGH" ;
+let oldLastName = lastName ;
+lastName = "Jodha";
+console.log(lastName,oldLastName);
+
+
+//reference value example
+
+const Vessica = {
+    firstName: "Vessica",
+    lastName : 'Singh',
+    age : 27 ,
+}
+
+const marriedSomeone = Vessica ;
+marriedSomeone.lastName = "Jodha";
+
+console.log("Before marriage : " ,Vessica);
+console.log("After marriage : " , marriedSomeone);
+
+// marriedSomeone = {}; //Uncaught TypeError: Assignment to constant variable.
+
+
+//Copying objects
+
+const Vessica2 = {
+    firstName: "Vessica",
+    lastName : 'Singh',
+    age : 27 ,
+    family : ['Raj' ,'Ankur'],
+}
+
+//object.assign() 
+const VessicaCopy = Object.assign({},Vessica2);
+VessicaCopy.lastName = "Jodha";
+
+console.log("Before marriage : " ,Vessica2);
+console.log("After marriage : " , VessicaCopy);
+
+VessicaCopy.family.push('Rohan');
+VessicaCopy.family.push('haan');
+
+
+console.log("Before marriage family increases : " ,Vessica2);
+console.log("After marriage family increases : " , VessicaCopy);
