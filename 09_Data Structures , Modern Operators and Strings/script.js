@@ -389,3 +389,156 @@ console.log(rest1);
 console.log(rest2);
 
 
+//Looping Array : the for of loop
+
+const menu2 = [...restaurant2.starterMenu ,... restaurant2.mainMenu];
+for(const item of menu2) console.log(item);
+
+
+//to get index we use .entries()
+
+for(const [i,el] of menu2.entries()){
+  console.log(`${i+1} : ${el} `);
+}
+
+
+
+//ES-6 Enhanced Object literals
+
+const weekdays1 =['mon' ,'tue' ,'wed' , 'thu' ,'fri' ,'sat' ,'sun'];
+const Hours = {
+  [weekdays1[2]]: {
+    open: 12,
+    close: 22,
+  },
+  [weekdays1[3]]: {
+    open: 11,
+    close: 23,
+  },
+  [weekdays1[5]]: {
+    open: 17,
+    close: 23,
+  },
+  // [`Day --${2+6}`] :{
+  //   open: 0, // Open 24 hours
+  //   close: 24,
+  // },
+  [weekdays1[6]] :{
+      open: 0, // Open 24 hours
+      close: 24,
+    },
+};
+
+console.log(Hours);
+
+const restaurant3 = {
+  name: 'Classico Italiano',
+  location: 'Via Angelo Tavanti 23, Firenze, Italy',
+  categories: ['Italian', 'Pizzeria', 'Vegetarian', 'Organic'],
+  starterMenu: ['Focaccia', 'Bruschetta', 'Garlic Bread', 'Caprese Salad'],
+  mainMenu: ['Pizza', 'Pasta', 'Risotto'],
+
+  //1st ES6 feature
+  Hours,
+
+  order(starterIndex , mainIndex){
+    return [this.starterMenu[starterIndex] , this.mainMenu[mainIndex]]
+  } ,
+
+
+  orderDelivery ({starterIndex = 1,mainIndex = 0,time ='20:00',address}){
+    console.log(
+      `Order received ! ${this.starterMenu[starterIndex]} and ${this.mainMenu[mainIndex]} will be delivered to ${address} at ${time}`
+    );
+  },
+
+
+  orderPasta(ing1 ,ing2 ,ing3){
+    console.log(`Here is your declicious pasta with ${ing1} , ${ing2} and ${ing3}`);
+  }
+
+ 
+};
+
+console.log(restaurant3);
+
+
+//Optional Chaining
+
+if(restaurant3.Hours && restaurant3.Hours.mon) console.log(restaurant3.Hours.mon.open);
+
+// console.log(restaurant3.Hours.mon.open);//  Uncaught TypeError: Cannot read properties of undefined (reading 'open')
+
+//with opitional chaining
+
+console.log(restaurant3.Hours.mon?.open);
+console.log (restaurant3.Hours?.mon?.open);
+
+//example
+const days =['mon' ,'tue' ,'wed' , 'thu' ,'fri' ,'sat' ,'sun'];
+
+for(const day of days){
+ const open = restaurant3.Hours[day]?.open ?? 'closed'
+  console.log(`on ${day} , we open at ${open}`);
+}
+
+//Methods
+
+console.log(restaurant3.order?.(0,1) ?? 'Method does not exits');
+console.log(restaurant3.orderALoo?.(0,1) ?? 'Method does not exits');
+
+
+
+//Arrays
+
+// const users = [
+//   {
+//     name : 'Raj' ,
+//     email : 'rajneesh@gmail.com'
+//   }
+// ]
+
+const users = []
+
+console.log(users[0]?.name ?? 'user array empty');
+
+if(users.length >0 ) console.log(users[0].name);
+else console.log('user array empty');
+
+
+//Looping Objects : object keys , values and Entries
+
+
+//Property names
+const properties = Object.keys(Hours);
+console.log(properties);
+
+let openStr =`We are open on ${properties.length} days `;
+
+// for(const day of Object.keys(hours)){
+//   console.log(day);
+// }
+
+for (const day of properties){
+  openStr += `${day} ,`
+}
+
+console.log(openStr);
+
+
+//Property Values
+
+const values = Object.values(Hours);
+console.log(values);
+
+//Entries object
+const entries = Object.entries(Hours);
+console.log(entries);
+
+
+//key and values
+for(const [day , {open , close}] of entries){
+  console.log( `On ${day} we open at ${open} and close at ${close}`);
+}
+
+
