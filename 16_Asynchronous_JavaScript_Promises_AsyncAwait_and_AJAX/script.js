@@ -8,7 +8,7 @@ const countriesContainer = document.querySelector('.countries');
 
 
 //AJAX request call in json format
-// Auth   HTTPS CORS(Cross-Origin Resource Sharing)
+// Auth    HTTPS    CORS(Cross-Origin Resource Sharing)
 
 const getCountryData = function(country){
 const request = new XMLHttpRequest();
