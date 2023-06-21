@@ -541,4 +541,5 @@ for(const [day , {open , close}] of entries){
   console.log( `On ${day} we open at ${open} and close at ${close}`);
 }
 
-
+console.log(Object.entries(openingHours));
+const hoursMap = new Map(Object.entries(openingHours));
