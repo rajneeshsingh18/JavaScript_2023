@@ -230,3 +230,111 @@ console.log(addGST2(100));
 console.log(addGST2(1050));
 
 console.log(addTax2(0.18)(100));
+
+
+//IIFE : Immediately Invoked Function Expression (IIFE)
+
+const runOnce = function(){
+    console.log('This will never run again');
+}
+runOnce();
+
+//IIFE
+(function(){
+    console.log('This will never run again');
+    // const isPrivate = 45;
+})();
+
+// console.log(isPrivate);
+
+// () => console.log('tHIS IS ALSO NEVER RUN AGAIN');
+(() => console.log('tHIS IS ALSO NEVER RUN AGAIN'))();
+
+
+{
+    const isPrivat3 =292;
+    var notPrivate =12;
+}
+// console.log(isPrivat3);
+console.log(notPrivate);
+
+
+
+/*
+:::::::::::::::Closures::::::::::::::::::
+
+--> A closure is the closed-over variable environment of the execution context in which a function was created , evne after that execution context is gone;
+                                    
+-->A closure gives a function access to all the variables of its parent function , even after that parent function has returned . The function keeps a reference to its outer scope , which preserves the scope chain throughtout time.
+
+--> A closure makes sure that a function doesn't loose connection to variables that existed at the functions birth place
+
+-->A closure is like a backpack that a function carries around wherever it goes . This backpack has all the variables that were present in the enivroment where the function was created
+*/
+
+
+const passengerBooking = function(){
+    let passengerCount = 0 ;
+
+    return function(){
+        passengerCount++;
+        console.log(`${passengerCount} passenger.`);
+    }
+}
+
+const booker = passengerBooking();
+
+booker();
+booker();
+booker();
+
+console.dir(booker)
+
+let f ;
+const g = function(){
+    const a =23 ;
+    return f = function(){
+        console.log(a*2);
+    }
+    
+}
+
+g();
+f();
+console.dir(f);
+
+const h = function(){
+    const b  = 100;
+    return f = function(){
+        console.log(b*3);
+    };
+}
+
+
+//Re-assinging f function
+h();
+f();
+console.dir(f);
+
+//Example 2 closures
+
+const boardPasenegers = function( n , wait){
+    // const perGroup = n/3;
+
+    setTimeout(function(){
+        console.log(`We are boarding all ${n} passengers`);
+        console.log(`There are 3 groups , each with ${perGroup} passenegers`);
+    },wait*1000)
+
+    console.log(`Will start boarding in ${wait} seconds`);
+}
+
+const perGroup = 1000;
+boardPasenegers(180 ,3)
+
+
+
+
+
+
+
