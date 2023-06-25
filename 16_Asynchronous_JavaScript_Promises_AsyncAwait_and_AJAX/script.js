@@ -65,7 +65,7 @@ const renderCountry = function(data , className){
   </article>
  `;
   countriesContainer.insertAdjacentHTML('beforeend' , html);
-  // countriesContainer.style.opacity = 1;
+  countriesContainer.style.opacity = 1;
 }
 
 /*
@@ -254,6 +254,101 @@ const getCountryData2 = function(country){
 const btn = document.querySelector('.btn-country');
 btn.addEventListener('click' , function(){
   getCountryData2('bharat')
+
 });
 
+//country without neighbour
 getCountryData2('australia');
+
+
+
+//The event loop 
+//--> microstack queue 
+//--> callback queue
+//--> Web API
+//--> JS Engine -> heap memory -> global execution context
+
+
+console.log('Test start');
+
+setTimeout(()=>console.log(`0 SEC TIMER`),0);
+
+//TO CREATE A PROMISE immediatley have success value
+
+Promise.resolve('Resolved promise 1').then(res => console.log(res)); //-->beacause it is present in microtask queue has priority over callback queue
+
+Promise.resolve('Resolve promise 2').then(res =>{
+
+  for(let i=0 ; i< 10000000;i++){}
+  console.log(res);
+})
+
+
+console.log('Test end');
+
+
+//Building a promise
+
+const lotteryPromise = new Promise(function(resolve , reject){
+
+  console.log('Lottery draw is happening');
+  setTimeout(function(){
+    if(Math.random()>=0.5){
+      resolve('You WIN ')  //fulfilled
+    }else{
+      reject(new Error('You lost your money 😭')); //rejected
+    }
+  },2000)
+});
+
+lotteryPromise.then(res => console.log(res)).catch(err => console.log(err));
+
+
+//Promisifying setTimeout
+
+const wait = function(seconds){
+  return new Promise(function(resolve){
+    setTimeout(resolve,seconds*1000);
+  })
+}
+
+wait(1).
+then(() =>{
+  console.log(`I waited for 1 seconds`);
+  return wait(1);
+})
+.then(() => {
+  console.log('I waited for 2 seconds')
+  return wait(2);
+})
+.then(() => {
+  console.log('I waited for 3 seconds')
+  return wait(3);
+})
+.then(() => console.log('I waited for 4 seconds'));
+ 
+
+//Callback hell 
+/*
+setTimeout(()=>{
+  console.log('1 second passed');
+  setTimeout(()=>{
+    console.log('2 second passed');
+    setTimeout(()=>{
+      console.log('3 second passed');
+      setTimeout(()=>{
+        console.log('4 second passed');
+      },1000)
+    },1000)
+  },1000)
+},1000)
+*/
+
+
+//creat a fulfilled promise immediately
+
+Promise.resolve('rahiiii').then(x => console.log(x));
+Promise.reject(new Error(`Problem !`)).catch(x=>console.error(x))
+
+
+navigator.geolocation.getCurrentPosition(position => console.log(position) , err)
