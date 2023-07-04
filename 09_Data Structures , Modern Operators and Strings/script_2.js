@@ -62,7 +62,7 @@ console.log(rest.get('open'));
 console.log(rest.get('1'));//undefined
 console.log(rest.get(1));
 
-const time = 8 ;
+const time = 15 ;
 console.log(rest.get(time > rest.get('open') && time < rest.get('close')));
 
 console.log(rest.has('categories'));
@@ -78,6 +78,37 @@ console.log(rest);
 console.log(rest.size);
 // console.log(rest.get([1,2])); //undefiend
 
+
+const restaurant = {
+    name: 'Classico Italiano',
+    location: 'Via Angelo Tavanti 23, Firenze, Italy',
+    categories: ['Italian', 'Pizzeria', 'Vegetarian', 'Organic'],
+    starterMenu: ['Focaccia', 'Bruschetta', 'Garlic Bread', 'Caprese Salad'],
+    mainMenu: ['Pizza', 'Pasta', 'Risotto'],
+  
+    openingHours: {
+      thu: {
+        open: 12,
+        close: 22,
+      },
+      fri: {
+        open: 11,
+        close: 23,
+      },
+      sat: {
+        open: 0, // Open 24 hours
+        close: 24,
+      },
+    },
+  };
+
+//Convert object to map --> NOT CLEAR
+// console.log(Object.entries(openingHours));
+// const hoursMap = new Map(Object.entries(openingHours));
+
+// console.log(hoursMap);
+
+//Map : Iteration
 const question = new Map([
     ['question' , 'What is Your name? '],
     [1,'Rajneesh'],
@@ -90,15 +121,6 @@ const question = new Map([
 
 ]);
 console.log(question);
-
-//Convert object to map --> NOT CLEAR
-// console.log(Object.entries(openingHours));
-// const hoursMap = new Map(Object.entries(openingHours));
-
-// console.log(hoursMap);
-
-//Map : Iteration
-
 console.log(question.get('question'));
 for( const [key, value] of question){
     if(typeof key === 'number') console.log(`Answer ${key} : ${value}`);
@@ -177,13 +199,14 @@ console.log(airline.toUpperCase);
 //Fix capitalization in name
 const passenger = "RaJnEEsh";
 const passengerLower = passenger.toLowerCase();
+console.log(passengerLower.slice(1));
 const passengerCorrect = passengerLower[0].toUpperCase() + passengerLower.slice(1);
 console.log(passengerCorrect);
 
 //comparing email
 
 const email = 'rajneesh@gmail.com';
-const loginEmail = 'RajNeesH@gmail.COm';
+const loginEmail = '   RajNeesH@gmail.COm  ';
 
 // const lowerEmail = loginEmail.toLowerCase();
 // const trimmedEmail = lowerEmail.trim();
@@ -237,7 +260,8 @@ console.log('Raj Hello I am ... '.split(' '));
 
 const [firstName , lastName] = "Rajneesh Singh".split(' ');
 
-const newName = ['Mr.' , firstName , lastName.toUpperCase()].join(' ');
+//opposite of split
+const newName = ['Mr.' , firstName , lastName.toUpperCase()].join(' -');
 console.log(newName);
 
 
@@ -256,7 +280,7 @@ capitalizeName('jessica ann smith ankur');
 //padding a string
 
 const message = 'Go to gate 29!';
-console.log(message.padStart(25 ,'+'));
+console.log(message.padStart(25 ,'+')); //lenght after the padding -->25
 console.log(message.padEnd(25 ,'+'));
 console.log(message.padStart(25 ,'+').padEnd(30,'+'));
 console.log(' Rajneesh '.padStart(20 ,'+').padEnd(30,'+'));
@@ -271,7 +295,8 @@ const maskCreditCard = function(number){
     return last.padStart(str.length, '*')
 }
 
-maskCreditCard(43523454);
+
+console.log(maskCreditCard(43523454));
 maskCreditCard('2435435235425243523');
 
 //Repeat
@@ -290,3 +315,15 @@ planesInLine(12);
 // Data needed for a later exercise
 const flights =
   '_Delayed_Departure;fao93766109;txl2133758440;11:25+_Arrival;bru0943384722;fao93766109;11:45+_Delayed_Arrival;hel7439299980;fao93766109;12:05+_Departure;fao93766109;lis2323639855;12:30';
+
+
+const getCode2 = str => str.slice(0,3).toUpperCase();
+
+for(const flight of flights.split('+')){
+    // console.log(flight);
+    // console.log(flight.split(';'));
+    const [type , from , to , time] =flight.split(';')
+    const output = `${type.startsWith('_Delayed')? '🚫': ' '}${type.replaceAll('_'," ")} from  ${getCode2(from)} to ${getCode2(to)} (${time.replace(':','h')})`
+
+    console.log(output);
+}

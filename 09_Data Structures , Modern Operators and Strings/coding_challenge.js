@@ -60,6 +60,7 @@ const game = {
   };
 
 //1. 
+console.log(game.players)
 const [players1 , players2] = game.players;
 console.log(players1,players2)
 
@@ -76,12 +77,11 @@ const players1Final = [...players1 ,'Thiago', 'Coutinho' , 'Perisic'];
 console.log(players1Final);
 
 //5.
-
+console.log(game.odds)
 const {odds:{team1 , x: draw , team2}} = game;
-console.log(team1 , draw . team2);
+console.log(team1 , draw , team2);
 
 //6. 
-
 const printGoals = function(...players){
     console.log(players);
     console.log(`${players.length} goals were scored`);

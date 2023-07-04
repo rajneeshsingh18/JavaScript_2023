@@ -74,7 +74,7 @@ const [first , , second] = restaurant1.categories;
 console.log(first,second);
 
 
-let [main , , secondary] = restaurant1.categories;
+let [main , , secondary] = restaurant1.starterMenu;
 console.log(main,secondary);
 
 
@@ -88,6 +88,7 @@ console.log(main,secondary);
 console.log(main,secondary);
 
 //Receive 2 return value from a function
+// console.log(restaurant1.order(1,1));
 const [starter , mainCourse] = restaurant1.order(2,0);
 // console.log(restaurant1.order(2,0));
 console.log(starter,mainCourse);
@@ -96,13 +97,21 @@ const nested = [2,4, [5,6]];
 // const [i,  ,j] = nested;
 // console.log(i,j);
 
-const [i , , [j,k] , ...rest]= nested ;
-console.log(i,j,k ,rest);
+//destructuring inside destruring
+const nested1 = [2,6,3,[4,24,5],24,3]
+const [i , ,j ,[k,l,m] , ...rest]= nested1 ;
+console.log(i,j,k,l,m ,rest);
+
 
 //default values
 
 const [p=1,q=1,r=1] = [8];
 console.log(p,q,r);
+
+const[lu,cl,zl=64]= [9,10];
+console.log(lu,cl,zl);
+
+
 
 ///////////////////////////////////////
 // Destructuring Objects
@@ -151,6 +160,7 @@ const restaurant2 = {
   }
 }
 
+
 restaurant2.orderDelivery({
         time : '22:30',
         address : 'Delhi dwarka ,11',
@@ -165,8 +175,10 @@ restaurant2.orderDelivery({
 });
 
 
+
 const {name1 , openingHours , categories} = restaurant2;
 console.log(name1 , openingHours , categories);
+
 
 //assinging different name
 const {name1 : restaurantName ,
@@ -186,7 +198,7 @@ console.log(menu ,starters);
 
 let x1 = 111;
 let y1 = 999;
-const obj ={ x1 :23 , y1:7 , z1:14};
+const obj ={ x1 :23 , y1:7 , z1:9};
 
 //{x1 , y1} = obj ;// Uncaught SyntaxError: Unexpected token
 ({x1 , y1} = obj) ;
@@ -196,26 +208,30 @@ console.log(x1,y1);
 
 //nested objects
 
+const {fri} =openingHours;
+console.log(fri);
+
 const {fri : {open : o , close : s}} = openingHours;
-// console.log(fri);
 // console.log(open , close);
 console.log(o , s);
 
-
 //Spread Operataor( ...)
 const arr1 = [7,8,9];
-const badNewArr = [1 , 2 ,arr[0], arr[1] , arr[2]];
+const badNewArr = [1 , 2 ,arr1[0], arr1[1] , arr1[2]];
 
 console.log(badNewArr);
 
-const newArr = [1,2,...arr1];
+
+const newArr = [8,9,2,...arr1];
 console.log(newArr);
 console.log(...newArr); //indiviual elements
+
+
 
 const newMenu = [...restaurant.mainMenu , 'Palak Paneer'];
 console.log(newMenu);
 
-//copy array
+//copy array -->shallo copy
 
 const mainMenuCopy = [...restaurant.mainMenu];
 
@@ -234,14 +250,17 @@ console.log(letters);
 console.log(...str);
 // console.log(`${...str} Singh`); //SyntaxError: Unexpected token '...'
 
-// const ingredinets = [prompt("Let's make pasta ! Ingredients 1 ? ") , 
-// prompt(" pasta ! Ingredients 2 ? ") ,
-//  prompt(" pasta ! Ingredients 3 ? ")] ;
+/*
+const ingredinets = [prompt("Let's make pasta ! Ingredients 1 ? ") , 
+prompt(" pasta ! Ingredients 2 ? ") ,
+ prompt(" pasta ! Ingredients 3 ? ")] ;
 
-//  console.log(ingredinets);
+ console.log(ingredinets);
 
-// restaurant2.orderPasta(ingredinets[0],ingredinets[1],ingredinets[2]);
-//  restaurant2.orderPasta(...ingredinets); //bettrer ES6 way
+restaurant2.orderPasta(ingredinets[0],ingredinets[1],ingredinets[2]);
+ restaurant2.orderPasta(...ingredinets); //bettrer ES6 way
+
+*/
 
 
 //Objects
@@ -249,6 +268,8 @@ console.log(...str);
 const newRest = {foundedIN : 1991 ,  ...restaurant2 , founder  : "Fooo"};
 console.log(newRest);
 
+
+//making copy of object using spread object
 const restaurantCopy1 = {...restaurant2};
 restaurantCopy1.name1 = 'Ristro ooma';
 
@@ -260,17 +281,22 @@ console.log(restaurant2.name1);
 
 
 //Rest Pattern and parameters
+//Spread --> unpack an array
 
 
 //spread , beacuse on Right side of =
 const arr2 = [1,2, ...[3,4]];
-
+console.log(arr2);
 
 //Rest , beacasue on letf side of =
+//Rest --> pack an array
+
 const [value1,value2 , ...others]= [1,2,3,4,5];
 console.log(value1 , value2 , others);
 
 
+console.log(...restaurant.mainMenu);
+ console.log(...restaurant.starterMenu);
 const [pizza , , risotto , ...otherFood] = [
   ...restaurant.mainMenu,
   ...restaurant.starterMenu
@@ -279,14 +305,14 @@ console.log(pizza , risotto , otherFood);
 
 //rest pattern in objects
 
+console.log(restaurant.openingHours);
 const {sat , ...weekdays} =restaurant.openingHours;
 console.log(weekdays);
-
-
 
 //functions
 
 const add = function(...numbers){
+  console.log(numbers)
     let sum = 0 ;
     for(let i=0 ; i<numbers.length ; i++){
       sum+=numbers[i];
@@ -302,9 +328,11 @@ const addition = [12,5,2];
 add(...addition)
 
 
+
+//orderPizza function inside object restaurant2
 restaurant2.orderPizza('mushroom' , 'onion' , 'olives','spinach')
 
-restaurant2.orderPizza('mushrooms');
+restaurant2.orderPizza('kaju');
 
 
 
@@ -322,7 +350,8 @@ console.log(undefined || null);
 
 console.log(undefined || 0 || '' || 'Hello' || 23 || null);
 
-//NULLISH COALESCING OPERATOR (??)
+
+//NULLISH COALESCING OPERATOR (??) //ES2020
 restaurant2.numGuests = 0;
 const guests1 = restaurant2.numGuests ? restaurant2.numGuests : 10 ;
 console.log(guests1);
@@ -331,8 +360,9 @@ console.log(guests1);
 const guests2 = restaurant2.numGuests ?? 23;
 console.log(guests2);
 
-// const guests2 = restaurant2.numGuests || 16;
-// console.log(guests2);
+const guests3 = restaurant2.numGuests || 16;
+console.log(guests3);
+
 
 
 // --> || falsey value evaluated
@@ -347,7 +377,7 @@ if(restaurant2.orderPizza){
   restaurant2.orderPizza('mushrooms' ,'corn');
 }
 
-restaurant2.orderPizza && restaurant2.orderPizza('mushrooms' , 'corn');
+restaurant2.orderPizza && restaurant2.orderPizza('kaju' , 'corn');
 
 
 
@@ -356,8 +386,8 @@ restaurant2.orderPizza && restaurant2.orderPizza('mushrooms' , 'corn');
 
 const rest1 = {
   name : 'Capri',
-  // numGuests : 20 ,
-  numGuests : 0 ,
+  numGuests : 20 ,
+  // numGuests : 0 ,
 
 }
 
@@ -367,8 +397,11 @@ const rest2 = {
 }
 
 
-// rest1.numGuests = rest1.numGuests || 10;
-// rest2.numGuests = rest2.numGuests || 23 ;
+//truthy
+rest1.numGuests = rest1.numGuests || 10;
+rest2.numGuests = rest2.numGuests || 23 ;
+console.log(rest1);
+console.log(rest2);
 
 //OR assignment opertaor
 // rest1.numGuests ||= 10 ;
@@ -378,28 +411,43 @@ const rest2 = {
 rest1.numGuests ??= 10 ;
 rest2.numGuests ??= 22 ;
 
+console.log(rest1);
+console.log(rest2);
+
 // rest2.owner = rest2.owner && 'ANONYMOUS';
+rest1.owner = rest1.owner && 'ANONYMOUS';
 // rest1.owner = rest1.owner ?? 'ANONYMOUS';
+// console.log(rest2);
+console.log(rest1);
 
 rest2.owner  &&= 'ANONYMOUS';
-rest1.owner &&= 'ANONYMOUS';
-
+rest1.owner ??= 'ANONYMOUS';
 
 console.log(rest1);
 console.log(rest2);
 
 
+
 //Looping Array : the for of loop
 
 const menu2 = [...restaurant2.starterMenu ,... restaurant2.mainMenu];
-for(const item of menu2) console.log(item);
+//get current element
+for(const item of menu2) 
+console.log(item);
 
 
 //to get index we use .entries()
+// console.log(menu2.entries()) --? //learn later
+
+for(const item of menu2.entries()){
+  console.log(`${item[0]+1}: ${item[1]}`);
+}
 
 for(const [i,el] of menu2.entries()){
   console.log(`${i+1} : ${el} `);
 }
+
+
 
 
 
@@ -502,6 +550,7 @@ const users = []
 
 console.log(users[0]?.name ?? 'user array empty');
 
+//without optional chaining
 if(users.length >0 ) console.log(users[0].name);
 else console.log('user array empty');
 
@@ -515,9 +564,9 @@ console.log(properties);
 
 let openStr =`We are open on ${properties.length} days `;
 
-// for(const day of Object.keys(hours)){
-//   console.log(day);
-// }
+for(const day of Object.keys(hours)){
+  console.log(day);
+}
 
 for (const day of properties){
   openStr += `${day} ,`
@@ -537,6 +586,10 @@ console.log(entries);
 
 
 //key and values
+
+for(const x of entries){
+  console.log(x);
+}
 for(const [day , {open , close}] of entries){
   console.log( `On ${day} we open at ${open} and close at ${close}`);
 }
