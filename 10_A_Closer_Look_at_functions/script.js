@@ -3,15 +3,8 @@
 //Default parameters
 const bookings = [];
 
-const createBooking = function(
-    fligthNUm , 
-    numPassenger =1 ,
-    price =199 *numPassenger)
+const createBooking = function(fligthNUm , numPassenger =1 ,price =199 *numPassenger)
     {
-    
-    //ES5
-    // numPassenger = numPassenger || 1 ;
-    // price = price || 199;
     const booking = {
         fligthNUm,
         numPassenger,
@@ -26,8 +19,11 @@ createBooking('AIR34',2,800);
 createBooking('Air' ,4);
 createBooking('bO28' ,14);
 createBooking('25bI' ,undefined , 125)
+// console.log(bookings);
+
 
 //PASSING ARGUMENTS AS VALUE VS REFERENCE
+//--> Javascript do not have feature that allow passing by reference
 
 const flight = 'BI172';
 const rajneesh ={
@@ -46,7 +42,7 @@ const checkIn = function(fligthNUm , passenger){
     }
 }
 
-// checkIn(flight,rajneesh);
+checkIn(flight,rajneesh);
 // console.log(flight);
 // console.log(rajneesh);
 
@@ -59,12 +55,12 @@ const checkIn = function(fligthNUm , passenger){
 const newPassport = function(person){
     person.passport = Math.trunc(Math.random()*10000000000);
 }
-// newPassport(rajneesh);
+newPassport(rajneesh);
 // checkIn(flight,rajneesh)
 
 
 
-//First - class and Higher order functions
+//First-class and Higher order functions
 
 
 //Function accepting callback function
@@ -82,7 +78,7 @@ const upperFirstWord = function(str){
 const transformer = function(str , fn){
     console.log(`Originalstring : ${str}`);
     console.log(`Transformed string : ${fn(str)}`);
-    console.log(`Transformed by : ${fn.name} `);
+    console.log(`Transformed by : ${fn.name} `); // .name property for function
 }
 
 transformer('JavaScript is the Best! ' ,upperFirstWord);
@@ -90,6 +86,8 @@ transformer('JavaScript is the Best! ' ,upperFirstWord);
 transformer('Best web language is Javascript' ,oneWord);
 
 /*
+
+//Js uses callbacks all the time
 const high5= function(){
     console.log(`Hello 👋`);
 }
@@ -117,7 +115,7 @@ greet('Good Evening')('Rajneesh');
 
 //Arrow function returning functions difficult
 
-const greetArr = greeter => name =>console.log(`${greeter} ${name}`);
+const greetArr = (greeter) => (name) =>console.log(`${greeter} ${name}`);
 
 greetArr('Hello')('Yashwant');
 
@@ -132,8 +130,10 @@ const airIndia = {
 
     book(fligthNUm , name){
         console.log(
+
             `${name} booked seat on ${this.airline} flight ${this.iataCode}${fligthNUm}`);
-    this.bookings.push({flight : `${this.iataCode}${fligthNUm}` ,name});
+
+            this.bookings.push({flight : `${this.iataCode}${fligthNUm}` ,name});
 },
 };
 
@@ -153,11 +153,14 @@ const book = airIndia.book;
 //Does not work this pointing to undefined
 // book(23 , 'Rajneesh');
 
-book.call(airIndia, 23 ,'Rajneesh');
+//.call() method
+
+book.call(airIndia, 23 ,'Rajneesh'); //this keyword pointing airIndia
 console.log(airIndia);
 
-book.call(NeoIndia ,1321 ,'Narayan');
+book.call(NeoIndia ,1321 ,'Narayan');//this keyword pointing NeoIndia
 book.call(NeoIndia ,1121 ,'Utkarsh');
+console.log(NeoIndia);
 
 const swiss ={
     airline : "Swiss Air lines",
@@ -178,7 +181,7 @@ book.call(swiss ,...flightData2);
 
 
 
-//bind method
+//bind method --> manually set this keyword return a new function
 
 const bookNI = book.bind(NeoIndia);
 bookNI(2432,'Shaan')
@@ -331,7 +334,7 @@ const boardPasenegers = function( n , wait){
 
 const perGroup = 1000;
 boardPasenegers(180 ,3)
-
+console.dir(boardPasenegers)
 
 
 
