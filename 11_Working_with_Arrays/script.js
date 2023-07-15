@@ -1,8 +1,9 @@
 'use strict';
 
-//        0    1   2   3   4
+//          0    1    2    3    4
 let arr = ['a', 'b', 'c', 'd', 'e'];
 
+//.slice() --> does not mutate array
 console.log(arr.slice(0));
 console.log(arr.slice(2));
 console.log(arr.slice(2, 4));
@@ -16,12 +17,28 @@ console.log(arr.slice());
 
 //splice --> change the original array
 
+
 // console.log(arr.splice(2)); //delete 
 console.log(arr.splice(-1));
 console.log(arr);
 
 arr.splice(1, 2);//b and c are deleted --> 2 is number of element we want to delete
 console.log(arr);
+
+//At position 2, add 2 elements:
+const fruits = ["Banana", "Orange", "Apple", "Mango"];
+fruits.splice(2, 0, "Lemon", "Kiwi")
+console.log(fruits);
+
+//At position 2, remove 2 items:
+const fruits2 = ["Banana", "Orange", "Apple", "Mango", "Kiwi"];
+fruits2.splice(2, 2);
+console.log(fruits2);
+
+//At position 2, add new items, and remove 1 item:
+const fruits3 = ["Banana", "Orange", "Apple", "Mango"];
+fruits3.splice(2, 1, "Lemon", "Kiwi");
+console.log(fruits3);
 
 //reverse
 
@@ -37,6 +54,19 @@ console.log(arr2);
 const letters = arr.concat(arr2);
 console.log(letters);
 console.log([...arr, ...arr2]);
+
+//Join two arrays
+const arr_3 = ["Cecilie", "Lone"];
+const arr4 = ["Emil", "Tobias", "Linus"];
+const children = arr_3.concat(arr4);
+console.log(children)
+
+//Join three arrays
+const arr6 = ["Cecilie", "Lone"];
+const arr7 = ["Emil", "Tobias", "Linus"];
+const arr8 = ["Robin"];
+const children2 = arr6.concat(arr7, arr8);
+console.log(children2)
 
 //JOIN
 console.log(letters.join("-->"));
@@ -62,6 +92,7 @@ console.log('RAJNEESH'.at(-1));
 
 //forEach method on array
 const log1 = [200, 450, -400, 3000, -650, -130, 70, 1300]
+console.log(log1.entries());
 
 // for(const movement of log1){
 for (const [i, movement] of log1.entries()) {
@@ -100,6 +131,7 @@ const currencies = new Map([
 ]);
 
 currencies.forEach(function (value, key, Map) {
+  console.log(Map);
   console.log(`${key} : ${value}`);
 })
 
@@ -127,28 +159,28 @@ currenciesUnique.forEach(function (value, _, set) {
 
 // Data
 const account1 = {
-  owner: 'Jonas Schmedtmann',
+  owner: 'Rajneesh Singh',
   movements: [200, 450, -400, 3000, -650, -130, 70, 1300],
   interestRate: 1.2, // %
   pin: 1111,
 };
 
 const account2 = {
-  owner: 'Jessica Davis',
+  owner: 'Yashwant Jodha',
   movements: [5000, 3400, -150, -790, -3210, -1000, 8500, -30],
   interestRate: 1.5,
   pin: 2222,
 };
 
 const account3 = {
-  owner: 'Steven Thomas Williams',
+  owner: 'Ankur Kumar',
   movements: [200, -200, 340, -300, -20, 50, 400, -460],
   interestRate: 0.7,
   pin: 3333,
 };
 
 const account4 = {
-  owner: 'Sarah Smith',
+  owner: 'Shaan Aalam',
   movements: [430, 1000, 700, 50, 90],
   interestRate: 1,
   pin: 4444,
@@ -206,39 +238,37 @@ const displayMovements = function (movements) {
 console.log(containerMovements.innerHTML);
 displayMovements(account1.movements)
 
+/*
 
-
-const calcDisplayBalance = function (movements) {
-  const balance = movements.reduce((acc, mov) => acc + mov, 0);
-  labelBalance.textContent = `${balance} EUR`
+const calcDisplayBalance = function (acc) {
+  acc.balance = acc.movements.reduce((acc, mov) => acc + mov, 0);
+  labelBalance.textContent = `${acc.balance} EUR`
 }
-calcDisplayBalance(account1.movements)
 
-const calcDisplaySummary = function(movements){
-  const incomes  = movements
+const calcDisplaySummary = function(acc){
+  const incomes  = acc.movements
   .filter(mov => mov >0 )
   .reduce((acc,mov)=>acc+mov ,0);
 
   labelSumIn.textContent = `${incomes}💵`;
 
-  const out = movements
+  const out = acc.movements
   .filter(mov => mov<0)
   .reduce((acc,mov)=>acc+mov,0)
   labelSumOut.textContent=`${Math.abs(out)}`
 
 
-  const interest = movements
+  const interest = acc.movements
   .filter(mov=>mov>0)
-  .map(deposit=>deposit*1.2/100)
+  .map(deposit=>deposit*acc.interestRate/100)
   .filter((int,i,arr)=>{
-    console.log(arr);
+    // console.log(arr);
     return int>=1;
   })
   .reduce((acc,mov)=>acc+mov ,0);
   labelSumInterest.textContent = `${interest}`
 }
 
-calcDisplaySummary(account1.movements)
 
 const creatUserName = function (accs) {
   accs.forEach(function (acc) {
@@ -252,7 +282,119 @@ const creatUserName = function (accs) {
 }
 
 creatUserName(accounts);
+
+
+
+
+
+//IMPLEMENTING LOGIN 
+
+btnLogin.addEventListener('click',function(e){
+
+  //prevent from submitting the form
+  e.preventDefault();
+  
+  let currentAccount;
+  currentAccount = accounts.find(
+    acc => acc.userName === inputLoginUsername.value
+  );
+  console.log(currentAccount);
+
+  if(currentAccount?.pin === Number(inputLoginPin.value)){
+    //Display UI and message
+    labelWelcome.textContent = `Welcome back , ${currentAccount.owner.split(' ')[0]}`;
+
+    containerApp.style.opacity = 100;
+
+    //clear unput fiels
+    inputLoginUsername.value = inputLoginPin.value = '';
+
+    inputLoginPin.blur();
+
+    //Display movements
+    displayMovements(currentAccount.movements)
+
+    //Display balance
+    calcDisplayBalance(currentAccount)
+
+
+    //Display summary
+    calcDisplaySummary(currentAccount)
+
+
+  }
+
+
+});
+
 console.log(accounts);
+
+btnTransfer.addEventListener('click',function(e){
+  e.preventDefault();
+
+  const amount = Number(inputTransferAmount.value);
+
+
+  const receiverAcc = accounts.find(acc => acc.userName == inputTransferTo.value);
+  console.log(amount , receiverAcc);
+
+  if(
+    amount>0 
+    && receiverAcc
+    // && currentAccount.balance >= amount 
+    && receiverAcc?.userName !== currentAccount.userName){
+
+    console.log(`Transfer valid`);
+
+    }
+})
+
+
+btnLoan.addEventListener('click',function(e){
+  e.preventDefault();
+
+  const amount = Number(inputLoanAmount.value);
+
+  if(amount > 0 && currentAccount.movements.some(mov=>mov >= amount*0.1)){
+    //Add movement 
+    currentAccount.movements.push(amount)
+
+    //Update UI
+
+    updateUI(currentAccount)
+  }
+  inputLoanAmount.value=' '
+})
+
+
+//FINDINDEX method
+
+btnClose.addEventListener('click',function(e){
+  e.preventDefault();
+
+
+  if(inputCloseUsername.value === currentAccount.userName &&
+     Number(inputClosePin.value) === currentAccount.pin){
+      const index = accounts.findIndex(acc => acc.userName === currentAccount.userName)
+
+     console.log(index);
+
+
+     //delete account
+
+     accounts.splice(index,1)
+     containerApp.style.opacity = 0;
+
+    inputClosePin.value = inputCloseUsername = ' ';
+
+
+     }  
+})
+
+
+*/
+
+
 
 
 //DATA TRANSFORMATION: MAP FILTER REDUCE
@@ -294,15 +436,28 @@ const movementDesciptions = movements_2.map((mov, i) => {
 
 console.log(movementDesciptions);
 
+// Return a new array with the square root of all element values:
+const numbers1 = [4, 9, 16, 25];
+const newArr1 = numbers1.map(Math.sqrt)
+console.log(newArr1);
+
+//Multiply all the values in an array with 10:
+const numbers = [65, 44, 12, 4];
+const newArr = numbers.map(num => num * 10)
+
+console.log(newArr)
+
 
 
 //--> FILTER METHOD on arrays
+console.log(movements_2);
 const deposit = movements_2.filter(function (mov) {
   return mov > 0;
 })
 
 console.log(deposit);
 
+//using for of loop
 const depositFor = [];
 for (const mov of movements_2) {
   if (mov > 0) {
@@ -315,55 +470,74 @@ const withdrawal = movements_2.filter((mov) => (mov < 0));
 
 console.log(withdrawal);
 
+// Return an array of all values in ages[] that are 18 or over:
+const ages = [32, 33, 16, 40, 15, 75, 4, 2, 2];
+const result = ages.filter(age => age >= 18);
+console.log(result)
+
 
 //-->REDUCE method
 
-// let balance_2 =0;
-// for(const mov of movements_2) balance_2+=mov;
-// console.log(balance_2);
+//Subtract all numbers in an array:
+const numbers4 = [175, 50, 25];
+const subtracted_reduced = numbers4.reduce((acc, val) => acc - val);
+console.log(subtracted_reduced)
 
-// const balance= movements_2.reduce(function(acc,cur_value,i){
-//   console.log(`Iteration ${i}:${acc} `);
-//   console.log(`${cur_value}`);
-//   return acc + cur_value
-// },100) //initail value
+//reduce by for of loop
+let balance_2 = 0;
+for (const mov of movements_2) balance_2 += mov;
+console.log(balance_2);
 
+
+//detaile of reduce
+const balance3 = movements_2.reduce(function (acc, cur_value, i) {
+  console.log(`Iteration ${i}:${acc} `);
+  console.log(`${cur_value}`);
+  return acc + cur_value
+}, 100) //initail value
+
+
+//accumulator is like a snowball 
 const balance = movements_2.reduce((acc, cur_value) => acc + cur_value, 120) //initail value
 
 console.log(`Total :`, balance);
 
 
 //maximum value 
-
-const max = movements_2.reduce((acc,mov)=>{
-  if(acc>mov) return acc;
+const max = movements_2.reduce((acc, mov) => {
+  if (acc > mov) return acc;
   else return mov;
-},movements_2[0])
+}, movements_2[0])
 
-console.log(`Maximum` ,max);
+console.log(`Maximum`, max);
 
 
 //Magic chaining method
 
 const USDToRupee2 = 82.22
 const totalDepositsRupees = movements_2
-.filter(mov => mov>0)
-.map(mov=>mov * USDToRupee2)
-.reduce((acc,mov)=>acc+mov ,0)
+  .filter(mov => mov > 0)
+  // .map(mov => mov * USDToRupee2)
+  .map((mov,i,arr) => {
+    // console.log(arr);
+    mov * USDToRupee2
+  })
+  .reduce((acc, mov) => acc + mov, 0)
 
-console.log(`Total amount is rupees : ` ,totalDepositsRupees);
+console.log(`Total Deposited amount is rupees : `, totalDepositsRupees);
 
 
 //FIND METHOD
 
-const firstWithdrawal = movements_2.find(mov => mov<0)
-
-
+const firstWithdrawal = movements_2.find(mov => mov < 0)
 console.log(movements_2);
 console.log(firstWithdrawal);
 
 
 console.log(accounts);
-
-const findOwner = accounts.find(acc => acc.owner ==='Jessica Davis')
+const findOwner = accounts.find(acc => acc.owner === 'Jessica Davis')
 console.log(findOwner);
+
+const ages6 = [3, 10, 18, 20];
+
+console.log(ages6.find(age=>age>18));

@@ -334,7 +334,7 @@ const boardPasenegers = function( n , wait){
 
 const perGroup = 1000;
 boardPasenegers(180 ,3)
-console.dir(boardPasenegers)
+// console.dir(boardPasenegers)
 
 
 
