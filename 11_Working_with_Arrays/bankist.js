@@ -437,16 +437,21 @@ console.log(deposit2,withdrwalas2);
 
 //this is a nice title --> This Is a Nice Title --> debugging required
 
-const convertTitleCase = function(title){
-  const capitzalize = str =>  str[0].toUpperCase()+ str.slice(1)
-  const exceptions = ['a','an','the','but','or','on','in','with'];
+const convertTitleCase = function (title) {
+  const capitalize = str => str[0].toUpperCase() + str.slice(1);
+  const exceptions = ['a', 'an', 'the', 'but', 'or', 'on', 'in', 'with'];
 
   const titleCase = title
-  .toLowerCase()
-  .split(' ')
-  .map(word =>
-    exceptions.includes(word) ? word :capitzalize(word));
+    .toLowerCase()
+    .split(' ')
+    .map((word, index) =>
+      exceptions.includes(word) && index !== 0 ? word : capitalize(word)
+    )
+    .join(' ');
+
   return titleCase;
 };
+
 console.log(convertTitleCase('this is a nice title'));
-console.log(convertTitleCase('this is a LOng title but not too in  with Great'));
+console.log(convertTitleCase('this is a LOng title but not too in with Great'));
+
