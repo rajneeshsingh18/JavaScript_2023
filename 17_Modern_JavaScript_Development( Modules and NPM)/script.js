@@ -56,13 +56,13 @@ Node.Js(software) : Contain open-source packages to include 3rd party code in ou
 
 // console.log('Something');
 
-const getLastPost = async function () {
-  const res = await fetch('https://jsonplaceholder.typicode.com/posts');
-  const data = await res.json();
-  // console.log(data);
+// const getLastPost = async function () {
+//   const res = await fetch('https://jsonplaceholder.typicode.com/posts');
+//   const data = await res.json();
+//   // console.log(data);
 
-  return { title: data.at(-1).title, text: data.at(-1).body };
-};
+//   return { title: data.at(-1).title, text: data.at(-1).body };
+// };
 
 const lastPost = getLastPost();
 console.log(lastPost);
@@ -143,3 +143,16 @@ state.user.loggedIn = false;
 console.log(stateClone);
 
 // console.log(stateDeepClone);
+
+
+class Person{
+    #greeting = 'Hey';
+    constructor(name){
+        this.name=name;
+        console.log(`${this.#greeting} , ${this.name}`);
+    }
+}
+
+const raj = new Person('Rajneesh')
+
+import 'core-js/stable';
