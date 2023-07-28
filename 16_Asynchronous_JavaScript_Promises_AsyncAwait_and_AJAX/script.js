@@ -7,6 +7,32 @@ const RenderError = function (msg) {
   // countriesContainer.style.opacity = 1;
 }
 
+const getJson = async function (url, errorMsg = 'Something went wrong') {
+  const response = await fetch(url);
+  if (!response.ok) throw new Error(`${errorMsg}(${response.status})`);
+  return await response.json();
+}
+
+
+const renderCountry = function (data, className) {
+  const html = `
+  <article class="country  ${className}">
+    <img class="country__img" src="${data.flag}" />
+    <div class="country__data">
+      <h3 class="country__name">${data.name}</h3>
+      <h4 class="country__region">${data.region}</h4>
+      <p class="country__row"><span>👫</span>${(+data.population / 1000000).toFixed(1)} Million people</p>
+      <p class="country__row"><span>🗣️</span>${data.languages[0].name}</p>
+      <p class="country__row"><span>💰</span>${data.currencies[0].name}</p>
+     
+    </div>
+  </article>
+ `;
+  countriesContainer.insertAdjacentHTML('beforeend', html);
+  countriesContainer.style.opacity = 1;
+}
+
+
 ///////////////////////////////////////
 // https://countries-api-836d.onrender.com/countries/
 
@@ -50,23 +76,6 @@ getCountryData('bharat');
 getCountryData('china');
 */
 
-const renderCountry = function (data, className) {
-  const html = `
-  <article class="country  ${className}">
-    <img class="country__img" src="${data.flag}" />
-    <div class="country__data">
-      <h3 class="country__name">${data.name}</h3>
-      <h4 class="country__region">${data.region}</h4>
-      <p class="country__row"><span>👫</span>${(+data.population / 1000000).toFixed(1)} Million people</p>
-      <p class="country__row"><span>🗣️</span>${data.languages[0].name}</p>
-      <p class="country__row"><span>💰</span>${data.currencies[0].name}</p>
-     
-    </div>
-  </article>
- `;
-  countriesContainer.insertAdjacentHTML('beforeend', html);
-  countriesContainer.style.opacity = 1;
-}
 
 /*
 const getCountryDataAndNeighbour = function(country){
@@ -101,7 +110,7 @@ const getCountryDataAndNeighbour = function(country){
   
   // getCountryDataAndNeighbour('portugal');
   getCountryDataAndNeighbour('bharat');
-
+*/
 
   //Callback hell 
   setTimeout(()=>{
@@ -117,32 +126,57 @@ const getCountryDataAndNeighbour = function(country){
     },1000)
   },1000)
 
+
+
+
+///////////////////////////////////////////////////////////////////
+//Promises and the fetch API --> ES6
+/*
+
+—>An object that is used as placeholder for the future result of an asynchronous operation.
+e.g., Promise That I will receive money if I guess correct outcome, or I buy lottery ticket (promise) right now.
+
+                                   or
+
+—>A container for a future value e.g. response from AJAX call
+
+                                   or
+
+—>A container for a future value e.g. response from AJAX call
+
+////Types of promises
+
+—>PENDING 
+
+—>SETTLED 
+1. FULFILLED
+2. REJECTED
+
+*/
+
+/* 
+/////////////////////////////////////////////////////////////////////
+//Consuming promises --> .then() , .json() 
+
+const getCountryData2 = function (country) {
+
+  //Modern ways of AJAX call
+  const request3 = fetch(`https://countries-api-836d.onrender.com/countries/name/${country}`)
+    .then(function (response) {
+      console.log(response);
+      return response.json();
+    })
+    .then(function (data) {
+      console.log(data);
+      renderCountry(data[0]);
+    })
+
+}
+
 */
 
 
-//Promises and the fetch API --> ES6
-
-
-
-
-//consuming promises --> .then() , .json() 
-
-// const getCountryData2 = function (country) {
-
-//   //Modern ways of AJAX call
-//   const request3 = fetch(`https://countries-api-836d.onrender.com/countries/name/${country}`)
-//     .then(function (response) {
-//       console.log(response);
-//       return response.json();
-//     })
-//     .then(function (data) {
-//       console.log(data);
-//       renderCountry(data[0]);
-//     })
-
-// }
-
-
+/////////////////////////////////////////////////////////////////
 //consuming promises --> .then() , .json() 
 /*
 const getCountryData2 = function(country){
@@ -157,6 +191,7 @@ const getCountryData2 = function(country){
 
 /*
 //chaining promisis to overcome callback hell 
+
 const getCountryData2 = function(country){
 
   //Modern ways of AJAX call
@@ -183,44 +218,6 @@ getCountryData2('bharat');
 
 //Handling Rejected Promises => .catch( err => alert(err))
 
-const getJson = async function (url, errorMsg = 'Something went wrong') {
-  const response = await fetch(url);
-  if (!response.ok) throw new Error(`${errorMsg}(${response.status})`);
-  return await response.json();
-}
-
-// const getCountryData2 = function(country){
-
-//   //Modern ways of AJAX call
-//   const request3 = fetch(`https://countries-api-836d.onrender.com/countries/name/${country}`)
-//   .then(response =>{
-//     console.log(response);
-
-//     if(!response.ok){
-//       throw new Error(`Country not found ${response.status}`)
-//     }
-
-//     return response.json()/* ,err => alert(err) */}
-//    ) ///json() and then() return a promise
-//   .then(data=>{ 
-//     renderCountry(data[0]);
-//     const neighbour = data[0]?.borders[0];
-
-//     if(!neighbour) return;
-
-//     //country
-//     return  fetch(`https://countries-api-836d.onrender.com/countries/alpha/${neighbour}`)
-//   })
-//   .then( response => response.json() /*,err => alert(err)*/)
-//   .then( data => renderCountry(data , 'neighbour'))
-//   .catch(err => {
-//     console.error(`${err}🖤😰😰`);
-//     RenderError(`SOMETHING WENNT WRONG ${err.message}🖤😰😰 `);
-//   })
-//   .finally(()=> {
-//         countriesContainer.style.opacity = 1;
-//   });
-// };
 
 
 const getCountryData2 = function (country) {
@@ -248,10 +245,11 @@ const getCountryData2 = function (country) {
       countriesContainer.style.opacity = 1;
     });
 };
+
+
 const btn = document.querySelector('.btn-country');
 btn.addEventListener('click', function () {
-  // getCountryData2('bharat')
-
+  getCountryData2('bharat')
 });
 
 //country without neighbour
@@ -265,7 +263,7 @@ btn.addEventListener('click', function () {
 //--> Web API
 //--> JS Engine -> heap memory -> global execution context
 
-/*
+
 console.log('Test start');
 
 setTimeout(() => console.log(`0 SEC TIMER`), 0);
@@ -324,7 +322,6 @@ wait(1).
   })
   .then(() => console.log('I waited for 4 seconds'));
 
-*/
 
 //Callback hell 
 /*
@@ -345,7 +342,7 @@ setTimeout(()=>{
 
 //creat a fulfilled promise immediately
 
-// Promise.resolve('rahiiii').then(x => console.log(x));
+Promise.resolve('rahiiii').then(x => console.log(x));
 // Promise.reject(new Error(`Problem !`)).catch(x => console.error(x))
 
 //Promisifyung the geoloaction API
@@ -359,20 +356,6 @@ console.log('Getting position')
 //Consuming Promises with Async/Await
 console.log('First');
 
-
-
-//Error handling with try catch
-
-/*
-try{
-  let y =1;
-  const x=2;
-  x=3;
-}catch(err){
-  alert(err.message)
-}
-*/
-
 const getPosition = function(){
   return new Promise(function (resolve , reject){
     navigator.geolocation.getCurrentPosition(
@@ -383,154 +366,28 @@ const getPosition = function(){
 
 const whereAmI = async function(country){
 
-  try{ //GeoLocation
+    //GeoLocation
     const pos = await getPosition();
     const {latitude : lat , longitude : lng}=pos.coords
 
     //Reverse GeoCoding
     const resGeo = await fetch(`https://geocode.xyz/${lat},${lng}?geoit=json&auth=203377718755924867659x87698`
     )
-    if(!resGeo.ok) throw new Error('Promblem getting location')
 
     const dataGeo = await resGeo.json();
-    // console.log(dataGeo);
+    console.log(dataGeo);
 
-    const res = await fetch(`https://countries-api-836d.onrender.com/countries/name/${dataGerbtdo.c45ountry}`) //await return a resolved value of a promise 
-
-    if(!resGeo.ok) throw new Error('Promblem getting country')
+    const res = await fetch(`https://countries-api-836d.onrender.com/countries/name/${dataGeo.country}`) //await return a resolved value of a promise 
     
     const data = await res.json()
     console.log(data);
     renderCountry(data[0])
-    return `You are in ${dataGeo.city} , ${dataGeo.country}`
-
-  }catch(error){
-    // console.error(`${err} 😭`);
-    RenderError(` ${err.message}`)
-
-
-    //Reject promise returned from async function
-    throw err;
-  }  
- }
+  }
   
-// whereAmI();
-// whereAmI();
-// whereAmI();
-// whereAmI();
-// whereAmI();
-// whereAmI();
-// whereAmI();
-// whereAmI();
-
-console.log("1: will get location");
-// const city = whereAmI(); //-->Pending promise
-// console.log(city);
-
-// whereAmI().then(req=>console.log(req))
-
-whereAmI()
-.then(req=>console.log(` 2: ${req}`))
-// .catch(err=>console.error(`2 : ${err.message} 💥`))
-.finally(()=>console.log("3:Finished getting location"));
-
-//IIFE
-(async function(){
-  try{
-    const city= await whereAmI()
-    console.log(` 2: ${city}`)
-  }catch(err){
-    console.error(`2: ${err.message} 💥`);
-  }
-  console.log("3:Finished getting location")
-})
+whereAmI();
 
 
-//Running Promises in Parallel
-
-/*
-const getCountryCapital = async function(c1,c2,c3){
-  try{
-      // const [data1]=await getJson(`https://countries-api-836d.onrender.com/countries/name/${c1}`);
-
-      // const [data2]=await getJson(`https://countries-api-836d.onrender.com/countries/name/${c2}`);
-
-      // const [data3]=await getJson(`https://countries-api-836d.onrender.com/countries/name/${c3}`);
-
-      // console.log([data1.capital ,data2.capital,data3.capital]);
-
-      const data = await Promise.all([
-        getJson(`https://countries-api-836d.onrender.com/countries/name/${c1}`),
-        getJson(`https://countries-api-836d.onrender.com/countries/name/${c2}`),
-        getJson(`https://countries-api-836d.onrender.com/countries/name/${c3}`)
-      ]);
-
-      console.log(data.map(d=>d[0].capital));
-
-      
-  }catch(err){
-    console.err(err);
-  }
-}
-
-getCountryCapital('bharat','USA','Canada')
-*/
-
-/*
-//Combinator for Promise : race
-(async function(){
-  const res = await Promise.race([
-      getJson(`https://countries-api-836d.onrender.com/countries/name/bharat`),
-      getJson(`https://countries-api-836d.onrender.com/countries/name/USA`),
-      getJson(`https://countries-api-836d.onrender.com/countries/name/Canada`)
-    ]);
-  console.log(res[0]);
-})();
-*/
-
-//Combinator for Promise : race
-const timeout = function(sec){
-  return new Promise(function(_,reject){
-    setTimeout(function(){
-      reject(new Error('request took too long!'))
-    },sec*1000)
-  })
-}
-
-Promise.race([
-  getJson(`https://countries-api-836d.onrender.com/countries/name/bharat`),
-  timeout(1)
-  // timeout(0.1) s//Error: request took too long! at script.js:495:14
-
-])
-.then(data=>console.log(data[0]))
-.catch(err=>console.error(err))
+//Error Handling with try..catch
 
 
-// Promise.allSettled() --> never shortcircuit
 
-Promise.allSettled([
-  Promise.resolve('Success'),
-  Promise.reject('Error'),
-  Promise.resolve('Another succes')
-])
-.then(res=>console.log(res))
-
-
-Promise.all([
-  Promise.resolve('Success'),
-  Promise.reject('Error'),
-  Promise.resolve('Another succes')
-])
-.then(res=>console.log(res))
-.catch(err=>console.error("Error in line 526",err))
-
-//Promise.any()
-
-Promise.any([
-  Promise.resolve('Success any'),
-  Promise.reject('Error'),
-  Promise.resolve('Another succes any')
-])
-.then(res=>console.log(res))
-.catch(err=>console.error("Error in line 526"))
